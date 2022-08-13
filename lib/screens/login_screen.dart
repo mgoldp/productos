@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:productos_app/providers/login_form_provider.dart';
 import 'package:productos_app/ui/input_decorations.dart';
 import 'package:productos_app/widgets/widgets.dart';
+import 'package:provider/provider.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -28,7 +30,10 @@ class LoginScreen extends StatelessWidget {
                   const SizedBox(
                     height: 30,
                   ),
-                  const _LoginForm(),
+                  ChangeNotifierProvider(
+                    create: (_) => LoginFormProvider(),
+                    child: const _LoginForm(),
+                  ),
                 ],
               ),
             ),
@@ -57,11 +62,12 @@ class _LoginForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final loginForm = Provider.of<LoginFormProvider>(context);
+
     return Container(
       child: Form(
-        // TODO: Manetener la referencia al KEY
         autovalidateMode: AutovalidateMode.onUserInteraction,
-
+        key: loginForm.formKey,
         child: Column(
           children: [
             TextFormField(
@@ -79,6 +85,9 @@ class _LoginForm extends StatelessWidget {
                 return regExp.hasMatch(value ?? '')
                     ? null
                     : 'Por favor ingrese un correo válido.';
+              },
+              onChanged: (value) {
+                loginForm.email = value;
               },
             ),
             const SizedBox(
@@ -98,13 +107,17 @@ class _LoginForm extends StatelessWidget {
                     ? null
                     : 'La contraseña debe tener al menos 6 caracteres';
               },
+              onChanged: (value) {
+                loginForm.password = value;
+              },
             ),
             const SizedBox(
               height: 30,
             ),
             MaterialButton(
               onPressed: () {
-                // TODO: Implementar OnPressed.
+                if (!loginForm.isValidForm()) return;
+                Navigator.pushReplacementNamed(context, 'homescreen');
               },
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10),
