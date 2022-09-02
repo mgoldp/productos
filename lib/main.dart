@@ -11,7 +11,11 @@ class AppState extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-      providers: [ChangeNotifierProvider(create: (_) => ProductService())],
+      providers: [
+        ChangeNotifierProvider(
+          create: (_) => ProductService(),
+        )
+      ],
       child: MyApp(),
     );
   }
@@ -26,7 +30,7 @@ class MyApp extends StatelessWidget {
       initialRoute: 'homescreen',
       routes: {
         'login': (_) => const LoginScreen(),
-        'homescreen': (_) => const HomeScreen(),
+        'homescreen': (_) => HomeScreen(),
         'product': (_) => const ProductScreen(),
       },
       theme: ThemeData.light().copyWith(
