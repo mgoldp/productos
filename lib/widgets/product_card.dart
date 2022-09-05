@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
 
+import 'package:productos_app/models/models.dart';
+
 class ProductCard extends StatelessWidget {
-  const ProductCard({Key? key}) : super(key: key);
+  const ProductCard({
+    Key? key,
+    required this.product,
+  }) : super(key: key);
+
+  final Product product;
 
   @override
   Widget build(BuildContext context) {
@@ -12,12 +19,15 @@ class ProductCard extends StatelessWidget {
         width: double.infinity,
         height: 400,
         decoration: _cardBorders(),
-        child: Stack(alignment: Alignment.bottomLeft, children: const [
-          _BackgroundImage(),
-          _ProductDetails(),
-          Positioned(top: 0, right: 0, child: _PriceTag()),
-          // TODO: Mostrar de manera condicional.
-          Positioned(top: 0, left: 0, child: _NotAvailable()),
+        child: Stack(alignment: Alignment.bottomLeft, children: [
+          _BackgroundImage(product.picture),
+          _ProductDetails(
+            title: product.name,
+            subTitle: product.id!,
+          ),
+          Positioned(top: 0, right: 0, child: _PriceTag(product.price)),
+          if (!product.available)
+            const Positioned(top: 0, left: 0, child: _NotAvailable()),
         ]),
       ),
     );
@@ -69,9 +79,9 @@ class _NotAvailable extends StatelessWidget {
 }
 
 class _PriceTag extends StatelessWidget {
-  const _PriceTag({
-    Key? key,
-  }) : super(key: key);
+  const _PriceTag(this.price);
+
+  final double price;
 
   @override
   Widget build(BuildContext context) {
@@ -83,13 +93,13 @@ class _PriceTag extends StatelessWidget {
           color: Colors.indigo,
           borderRadius: BorderRadius.only(
               topRight: Radius.circular(25), bottomLeft: Radius.circular(25))),
-      child: const FittedBox(
+      child: FittedBox(
         fit: BoxFit.contain,
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 10),
+          padding: const EdgeInsets.symmetric(horizontal: 10),
           child: Text(
-            '\$103.99',
-            style: TextStyle(
+            '\$$price',
+            style: const TextStyle(
               color: Colors.white,
               fontSize: 20,
             ),
@@ -102,8 +112,12 @@ class _PriceTag extends StatelessWidget {
 
 class _ProductDetails extends StatelessWidget {
   const _ProductDetails({
-    Key? key,
-  }) : super(key: key);
+    required this.title,
+    required this.subTitle,
+  });
+
+  final String title;
+  final String subTitle;
 
   @override
   Widget build(BuildContext context) {
@@ -114,26 +128,22 @@ class _ProductDetails extends StatelessWidget {
         width: double.infinity,
         height: 70,
         decoration: _buildBoxDecoration(),
-        child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: const [
-              Text(
-                'Disco Duro G',
-                style: TextStyle(
-                    fontSize: 20,
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-              ),
-              Text(
-                'Id delDisco Duro',
-                style: TextStyle(
-                  fontSize: 15,
-                  color: Colors.white,
-                ),
-              ),
-            ]),
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          Text(
+            title,
+            style: const TextStyle(
+                fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
+          Text(
+            subTitle,
+            style: const TextStyle(
+              fontSize: 15,
+              color: Colors.white,
+            ),
+          ),
+        ]),
       ),
     );
   }
@@ -145,9 +155,11 @@ class _ProductDetails extends StatelessWidget {
 }
 
 class _BackgroundImage extends StatelessWidget {
-  const _BackgroundImage({
-    Key? key,
-  }) : super(key: key);
+  const _BackgroundImage(
+    this.url,
+  );
+
+  final String? url;
 
   @override
   Widget build(BuildContext context) {
@@ -156,9 +168,10 @@ class _BackgroundImage extends StatelessWidget {
       child: Container(
         width: double.infinity,
         height: 400,
-        child: const FadeInImage(
-          placeholder: AssetImage('assets/jar-loading.gif'),
-          image: NetworkImage('https://via.placeholder.com/400x300/f6f6f6'),
+        child: FadeInImage(
+          // TODO: Fix producto cuando no hay imagen
+          placeholder: const AssetImage('assets/jar-loading.gif'),
+          image: NetworkImage(url!),
           fit: BoxFit.cover,
         ),
       ),

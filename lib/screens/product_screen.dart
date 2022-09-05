@@ -51,6 +51,7 @@ class ProductScreen extends StatelessWidget {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
       floatingActionButton: FloatingActionButton(
+        elevation: 10,
         child: const Icon(Icons.save_outlined),
         onPressed: () {
           // TODO: Guardar producto
