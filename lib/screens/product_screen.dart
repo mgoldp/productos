@@ -83,7 +83,7 @@ class _ProductScreenBody extends StatelessWidget {
         child: const Icon(Icons.save_outlined),
         onPressed: () async {
           // TODO: Guardar producto
-          if (productForm.isValidForm()) return;
+          if (!productForm.isValidForm()) return;
           await producService.saveOrCreateProduct(productForm.product);
         },
       ),
