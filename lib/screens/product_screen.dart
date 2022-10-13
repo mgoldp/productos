@@ -5,6 +5,7 @@ import 'package:productos_app/services/services.dart';
 import 'package:productos_app/ui/input_decorations.dart';
 import 'package:productos_app/widgets/product_image.dart';
 import 'package:provider/provider.dart';
+import 'package:image_picker/image_picker.dart';
 
 class ProductScreen extends StatelessWidget {
   const ProductScreen({Key? key}) : super(key: key);
@@ -58,8 +59,18 @@ class _ProductScreenBody extends StatelessWidget {
                   top: 60,
                   right: 20,
                   child: IconButton(
-                    onPressed: () {
-                      // TODO: Cámara o galería
+                    onPressed: () async {
+                      final picker = ImagePicker();
+                      final XFile? pickedFile = await picker.pickImage(
+                        source: ImageSource.camera,
+                        imageQuality: 100,
+                      );
+
+                      if (pickedFile == null) {
+                        print('No seleccionó nada');
+                        return;
+                      }
+                      print('Tenemos imagen: ${pickedFile.path}');
                     },
                     icon: const Icon(
                       Icons.camera_alt_outlined,
@@ -82,7 +93,6 @@ class _ProductScreenBody extends StatelessWidget {
         elevation: 10,
         child: const Icon(Icons.save_outlined),
         onPressed: () async {
-          // TODO: Guardar producto
           if (!productForm.isValidForm()) return;
           await producService.saveOrCreateProduct(productForm.product);
         },
