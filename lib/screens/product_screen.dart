@@ -71,6 +71,7 @@ class _ProductScreenBody extends StatelessWidget {
                         return;
                       }
                       print('Tenemos imagen: ${pickedFile.path}');
+                      producService.updateSelectedProductImage(pickedFile.path);
                     },
                     icon: const Icon(
                       Icons.camera_alt_outlined,
