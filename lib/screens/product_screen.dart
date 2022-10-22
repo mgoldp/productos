@@ -67,10 +67,8 @@ class _ProductScreenBody extends StatelessWidget {
                       );
 
                       if (pickedFile == null) {
-                        print('No seleccionó nada');
                         return;
                       }
-                      print('Tenemos imagen: ${pickedFile.path}');
                       producService.updateSelectedProductImage(pickedFile.path);
                     },
                     icon: const Icon(
@@ -95,6 +93,11 @@ class _ProductScreenBody extends StatelessWidget {
         child: const Icon(Icons.save_outlined),
         onPressed: () async {
           if (!productForm.isValidForm()) return;
+
+          final String? imageUrl = await producService.uploadImage();
+
+          print(imageUrl);
+
           await producService.saveOrCreateProduct(productForm.product);
         },
       ),
