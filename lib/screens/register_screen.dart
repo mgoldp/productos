@@ -4,8 +4,8 @@ import 'package:productos_app/ui/input_decorations.dart';
 import 'package:productos_app/widgets/widgets.dart';
 import 'package:provider/provider.dart';
 
-class LoginScreen extends StatelessWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+class RegisterScreen extends StatelessWidget {
+  const RegisterScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +24,7 @@ class LoginScreen extends StatelessWidget {
                     height: 10,
                   ),
                   Text(
-                    'Log In',
+                    'Crear nueva cuenta.',
                     style: Theme.of(context).textTheme.headline4,
                   ),
                   const SizedBox(
@@ -41,15 +41,14 @@ class LoginScreen extends StatelessWidget {
               height: 20,
             ),
             TextButton(
-              onPressed: () =>
-                  Navigator.pushReplacementNamed(context, 'register'),
+              onPressed: () => Navigator.pushReplacementNamed(context, 'login'),
               style: ButtonStyle(
                 overlayColor:
                     MaterialStateProperty.all(Colors.indigo.withOpacity(0.1)),
                 shape: MaterialStateProperty.all(const StadiumBorder()),
               ),
               child: const Text(
-                'Crear una nueva cuenta',
+                '¿Ya tienes una cuenta?',
                 style: TextStyle(
                   fontSize: 18,
                   color: Colors.black87,
