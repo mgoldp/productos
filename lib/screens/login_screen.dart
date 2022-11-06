@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:productos_app/providers/login_form_provider.dart';
+import 'package:productos_app/services/services.dart';
 import 'package:productos_app/ui/input_decorations.dart';
 import 'package:productos_app/widgets/widgets.dart';
 import 'package:provider/provider.dart';
-
-import '../services/auth_service.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -144,8 +143,7 @@ class _LoginForm extends StatelessWidget {
                       if (errorMessage == null) {
                         Navigator.pushReplacementNamed(context, 'homescreen');
                       } else {
-                        // TODO: Mostrar error por pantalla
-                        print(errorMessage);
+                        NotificationsService.showSnackBar(errorMessage);
 
                         loginForm.isLoading = false;
                       }
